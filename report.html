@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Debris Reporting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://storage.googleapis.com/a1aa/image/6ebc9fa4-3149-4d71-ae17-d020c55e0a70.jpeg'); /* Ocean Waves */
+            background-size: cover;
+            background-position: center;
+            color: white; /* Change text color for better visibility */
+        }
+
+        header, footer {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+            padding: 20px;
+            text-align: center;
+        }
+
+        section {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for sections */
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h1, h2 {
+            color: #FFD700; /* Gold color for headings */
+        }
+
+        label {
+            display: block;
+            margin : 10px 0 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #FFD700; /* Gold color for button */
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #FFC10 7; /* Darker gold on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Report Marine Debris</h1>
+        <p>Help us keep our oceans clean! Report debris and upload photos to assist government efforts.</p>
+    </header>
+
+    <section id="about">
+        <h2>About Marine Debris Tracker</h2>
+        <p>The Marine Debris Tracker is a community-driven initiative aimed at identifying and reporting marine debris to promote a cleaner marine environment. By reporting debris, you contribute to data collection that helps government agencies and organizations take action against pollution in our oceans.</p>
+        <p>Your participation is crucial in raising awareness and fostering a cleaner, healthier marine ecosystem for future generations.</p>
+    </section>
+
+    <section id="report-form">
+        <h2>Debris Reporting Form</h2>
+        <form action="submit_report.php" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Contact Information</legend>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number (optional):</label>
+                <input type="tel" id="phone" name="phone">
+            </fieldset>
+
+            <fieldset>
+                <legend>Debris Information</legend>
+                <label for="debris-type">Type of Debris:</label>
+                <select id="debris-type" name="debris_type" required>
+                    <option value="plastic">Plastic</option>
+                    <option value="glass">Glass</option>
+                    <option value="metal">Metal</option>
+                    <option value="rubber">Rubber</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="description">Description of Debris:</label>
+                <textarea id="description" name="description" required></textarea>
+
+                <label for="latitude">Latitude:</label>
+                <input type="text" id="latitude" name="latitude" required>
+
+                <label for="longitude">Longitude:</label>
+                <input type="text" id="longitude" name="longitude" required>
+
+                <label for="location">Specific Location:</label>
+                <input type="text" id="location" name="location" required>
+            </fieldset>
+
+            <fieldset>
+                <legend>Request Assistance</legend>
+                <label>Do you need assistance from the government?</label>
+                <input type="radio" id="assistance-yes" name="assistance" value="yes">
+                <label for="assistance-yes">Yes</label>
+                <input type="radio" id="assistance-no" name="assistance" value="no" checked>
+                <label for="assistance-no">No</label>
+
+                <label for="assistance-description">If yes, please describe your request:</label>
+                <textarea id="assistance-description" name="assistance_description"></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Additional Comments</legend>
+                <textarea id="additional-comments" name="additional_comments"></textarea>
+            </fieldset>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>Thank you for your report! Your submission will help us track and manage marine debris effectively.</p>
+        <p>For any questions, please contact us at [Contact Information].</p>
+        <p>Follow us on [Social Media Links].</p>
+        <p><a href="privacy_policy.html">Privacy Policy</a></p>
+<p><a href="index.html">Back to Home</a></p>
+    <p><a href="map.html">View Map</a></p>
+    </footer>
+</body>
+</html>

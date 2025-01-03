@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Debris Web App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background: #006994;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .hero {
+            background: url('https://storage.googleapis.com/a1aa/image/54c6a565-06b8-4c90-8440-ebc9e9306e6f.jpeg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .hero .cta {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cta button {
+            background: #006994;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        .features .feature {
+            background: white;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .data-snapshot {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .data-snapshot h2 {
+            margin-bottom: 1rem;
+        }
+
+        .data-snapshot .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .map {
+            padding: 2rem;
+            background: #006994;
+            color: white;
+            text-align: center;
+        }
+
+        .community {
+            text-align: center;
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        footer {
+            background: #003f5c;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        footer .social-icons {
+            margin-top: 1rem;
+        }
+
+        footer .social-icons a {
+            color: white;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Marine Debris</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#about">About</a>
+        <a href="#dashboard">Data Dashboard</a>
+        <a href="#resources">Resources</a>
+        <a href="#contact">Contact Us</a>
+        <a href="signin.html">Login</a> <!-- Single Login button -->
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Protect Our Oceans</h1>
+    <p>Join the effort to reduce and report marine debris for a cleaner, healthier planet.</p>
+    <div class="cta">
+         <a href="signup.html"><button>Learn More</button></a>
+    <a href="report.html"><button>Report Debris</button></a>
+    <a href="map.html"><button>Debris Tracker</button></a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h3>Track Debris</h3>
+        < p>Explore real-time marine debris data and trends.</p>
+    </div>
+    <div class="feature">
+        <h3>Report Debris</h3>
+        <p>Contribute to our database by reporting debris you encounter.</p>
+    </div>
+    <div class="feature">
+        <h3>Community Engagement</h3>
+        <p>Join local initiatives and events to help clean our oceans.</p>
+    </div>
+</section>
+
+<section class="data-snapshot">
+    <h2>Marine Debris Statistics</h2>
+    <div class="stats">
+        <div>
+            <h4>Total Reports</h4>
+            <p>1,234</p>
+        </div>
+        <div>
+            <h4>Active Users</h4>
+            <p>567</p>
+        </div>
+        <div>
+            <h4>Debris Removed</h4>
+            <p>890 kg</p>
+        </div>
+    </div>
+</section>
+
+<section class="map">
+    <h2>Interactive Map</h2>
+    <p>View reported debris locations on our interactive map.</p>
+</section>
+
+<section class="community">
+    <h2>Join Our Community</h2>
+    <p>Connect with like-minded individuals and organizations dedicated to ocean conservation.</p>
+</section>
+
+<footer>
+    <p>&copy; 2023 Marine Debris. All rights reserved.</p>
+    <div class="social-icons">
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+    </div>
+</footer>
+
+</body>
+</html>

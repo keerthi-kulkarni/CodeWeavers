@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Marine Debris Tracker Map</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <link href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" rel="stylesheet"/>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #006994a6;
+        }
+        #map {
+            height: 60vh; /* Set the height of the map */
+        }
+        .container {
+            padding: 20px;
+        }
+        .input-box {
+            margin-bottom: 10px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            background-color: #006994;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #005577;
+        }
+        .worldview-link {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            color: #006994;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Marine Debris Tracker Map</h1>
+    <div class="input-box">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" class="input-field" placeholder="Enter latitude" required>
+    </div>
+    <div class="input-box">
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" class="input-field" placeholder="Enter longitude" required>
+    </div>
+    <button class="btn" id="locate">Locate</button>
+    <div id="map"></div>
+    <div id="info">
+        <h2>Debris Information</h2>
+        <p id="location-name">Nearest Location: <span>N/A</span></p>
+        <p id="debris-type">Type: <span>N/A</span></p>
+        <p id="debris-amount">Amount: <span>N/A</span></p>
+        <p id="debris-depth">Depth: <span>N/A</span></p>
+        <p id="debris-radius">Radius: <span>N/A</span></p>
+        <p id="distance">Distance from you: <span>N/A</span></p>
+    </div>
+    <a class="worldview-link" href="https://worldview.earthdata.nasa.gov/" target="_blank">View Real-Time Satellite Imagery on NASA Worldview</a>
+</div>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="report.html">Report Debris</a>
+</nav>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const map = L.map('map').setView([20, 0], 2); // Set initial view of the map
+
+        L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.opentopomap.org/copyright">OpenTopoMap</a> contributors'
+        }).addTo(map);
+
+        const debrisData = [
+            { lat: 12.000, lon: 72.8777, locationName: 'Kochi–Androth', type: 'Plastic', amount: 'High', depth: '90 meters', radius: '20 km' },
+            { lat: 13.0827, lon: 80.2707, locationName: 'Chennai', type: 'Metal', amount: 'Medium', depth : '5 meters', radius: '15 km' },
+            { lat: 22.5726, lon: 88.3639, locationName: 'Kolkata', type: 'Rubber', amount: 'Low', depth: '3 meters', radius: '2 km' },
+            { lat: 17.6868, lon: 83.2185, locationName: 'Visakhapatnam', type: 'Clothing', amount: 'High', depth: '8 meters', radius: '12 km' },
+            { lat: 9.9312, lon: 76.2673, locationName: 'Kochi', type: 'Food Waste', amount: 'Medium', depth: '4 meters', radius: '8 km' }
+        ];
+
+        let userMarker = null;
+        let selectedMarker = null;
+
+        const userIcon = L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-red.png',
+            iconSize: [30, 45],
+            iconAnchor: [15, 45],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        const debrisIcon = L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        debrisData.forEach(debris => {
+            const marker = L.marker([debris.lat, debris.lon], {icon: debrisIcon}).addTo(map);
+            marker.on('click', () => {
+                updateDebrisInfo(debris);
+                if (selectedMarker) {
+                    map.removeLayer(selectedMarker);
+                }
+                selectedMarker = L.marker([debris.lat, debris.lon], {icon: debrisIcon}).addTo(map);
+            });
+        });
+
+        document.getElementById('locate').addEventListener('click', () => {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lon = parseFloat(document.getElementById('longitude').value);
+
+            if (!isNaN(lat) && !isNaN(lon)) {
+                map.setView([lat, lon], 10);
+                if (userMarker) {
+                    map.removeLayer(userMarker);
+                }
+                userMarker = L.marker([lat, lon], {icon: userIcon}).addTo(map);
+                const nearestDebris = findNearestDebris(lat, lon, debrisData);
+                if (nearestDebris) {
+                    updateDebrisInfo(nearestDebris);
+                    const distance = getDistance(lat, lon, nearestDebris.lat, nearestDebris.lon);
+                    document.getElementById('distance').innerHTML = `Distance from you: <span>${distance.toFixed(2)} km</span>`;
+                }
+            }
+        });
+
+        function updateDebrisInfo(debris) {
+            document.getElementById('location-name').innerHTML = `Nearest Location: <span>${debris.locationName}</span>`;
+            document.getElementById('debris-type').innerHTML = `Type: <span>${debris.type}</span>`;
+            document.getElementById('debris-amount').innerHTML = `Amount: <span>${debris.amount}</span>`;
+            document.getElementById('debris-depth').innerHTML = `Depth: <span>${debris.depth}</span>`;
+            document.getElementById('debris-radius').innerHTML = `Radius: <span>${debris.radius}</span>`;
+        }
+
+        function findNearestDebris(lat, lon, debrisData) {
+            let nearestDebris = null;
+            let minDistance = Infinity;
+
+            debrisData.forEach(debris => {
+                const distance = getDistance(lat, lon, debris.lat, debris.lon);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestDebris = debris;
+                }
+            });
+
+            return nearestDebris;
+        }
+
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math .atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Distance in km
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+    });
+</script>
+</body>
+</html>
